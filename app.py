@@ -5,7 +5,7 @@ import plotly.graph_objs as go
 import dash_bootstrap_components as dbc
 
 # Read data from CSV file
-data_air = pd.read_csv("air4thai.csv")
+data_air = pd.read_csv("Amphon\clean_data_air4thai.csv")
 data_air["DATETIMEDATA"] = pd.to_datetime(data_air["DATETIMEDATA"], format="%Y-%m-%d %H:%M:%S")
 data_air.sort_values("DATETIMEDATA", inplace=True)
 
@@ -290,7 +290,7 @@ predict_layout = html.Div(
         html.Div(
             children=[
                 html.H1(
-                    children="Model Predictions", className="header-title"
+                    children="Predictions", className="header-title"
                 ),
                 html.P(
                     children="Visualize the predictions made by the model",
@@ -403,22 +403,24 @@ def update_prediction_chart(selected_parameter):
 
     low_threshold = 25
     
-    high_threshold = 37  
+    high_threshold = 50
 
-    # สร้าง trace ของกราฟแท่ง
+
+    # gen graph
     trace = {
         "x": data_pred["DATETIMEDATA"],
         "y": data_pred[selected_parameter],
         "type": "bar",
         "marker": {
             "color": [
-                "green" if val <= low_threshold else "red" if val >= high_threshold else "orange" for val in data_pred[selected_parameter]
+                "green" if val <= low_threshold else "orange" if val >= high_threshold else "yellow" for val in data_pred[selected_parameter]
             ],
         },
     }
+    
 
     layout = {
-        "title": f"Model Predictions - {selected_parameter}",
+        "title": f"Predictions - {selected_parameter}",
         "xaxis": {"title": "Datetime"},
         "yaxis": {"title": selected_parameter},
     }
