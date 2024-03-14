@@ -1,3 +1,4 @@
+
 # Amphon
 เว็บแสดงผลข้อมูล และพยากรณ์ฝุ่น pm2.5 
 
@@ -10,6 +11,26 @@
 
 คุณสามารถใช้ git clone ได้เลย
 
+##  Creation of virtual environments
+
+linux:
+
+```bash
+python3 -m venv virtualenv_name
+```
+activate:
+```bash
+source virtualenv_name/bin/activate
+```
+
+window:
+```bash
+python -m venv virtualenv_name
+```
+activate:
+```bash
+virtualenv_name\Scripts\activate
+```
 
 จากนั้นทำการติดตั้ง package
 ```bash
