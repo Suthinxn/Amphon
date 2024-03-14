@@ -5,12 +5,12 @@ import plotly.graph_objs as go
 import dash_bootstrap_components as dbc
 
 # Read data from CSV file
-data_air = pd.read_csv("Amphon\clean_data_air4thai.csv")
+data_air = pd.read_csv("clean_data_air4thai.csv")
 data_air["DATETIMEDATA"] = pd.to_datetime(data_air["DATETIMEDATA"], format="%Y-%m-%d %H:%M:%S")
 data_air.sort_values("DATETIMEDATA", inplace=True)
 
 # Read data from CSV file for prediction
-data_pred = pd.read_csv("D:\Dash_last\predictions_future.csv")
+data_pred = pd.read_csv("merged_data.csv")
 data_pred["DATETIMEDATA"] = pd.to_datetime(data_pred["DATETIMEDATA"], format="%Y-%m-%d %H:%M:%S")
 data_pred.sort_values("DATETIMEDATA", inplace=True)
 
@@ -49,7 +49,7 @@ main = html.Div(
         navbar,
         html.Div(
             children=[
-                html.P(children="💨🤧💨", className="header-emoji"),
+                html.P(children="💨☁️💨", className="header-emoji"),
                 html.H1(
                     children="Air Quality Analytics", className="header-title"
                 ),
@@ -276,7 +276,7 @@ def update_daily_stats(selected_parameter, start_date, end_date):
         "title": f"Daily Statistics - {selected_parameter}",
         "xaxis": {"title": "Date"},
         "yaxis": {"title": selected_parameter},
-        "colorway": ["#FF5733", "#33FF57", "#5733FF"],  # Different color for each statistic
+        "colorway": ["#ECB365", "#064663", "#041C32"],  # Different color for each statistic
     }
 
     return {"data": traces, "layout": layout}
@@ -289,6 +289,7 @@ predict_layout = html.Div(
         navbar,
         html.Div(
             children=[
+                html.P(children="💨  😷  💨", className="header-emoji"),
                 html.H1(
                     children="Predictions", className="header-title"
                 ),
@@ -398,25 +399,25 @@ def update_stats_table_predict(selected_parameter):
         Input("parameter-filter-predict", "value"),
     ],
 )
+
 def update_prediction_chart(selected_parameter):
     # Set threshold values for color coding
-
     low_threshold = 25
-    
     high_threshold = 50
+    very_high_threshold = 100
 
-
-    # gen graph
+    # Generate graph
     trace = {
         "x": data_pred["DATETIMEDATA"],
         "y": data_pred[selected_parameter],
         "type": "bar",
         "marker": {
             "color": [
-                "green" if val <= low_threshold else "orange" if val >= high_threshold else "yellow" for val in data_pred[selected_parameter]
+                "green" if val <= low_threshold else "orange" if low_threshold < val <= high_threshold else "yellow" if high_threshold < val <= very_high_threshold else "red" for val in data_pred[selected_parameter]
             ],
         },
     }
+
     
 
     layout = {
